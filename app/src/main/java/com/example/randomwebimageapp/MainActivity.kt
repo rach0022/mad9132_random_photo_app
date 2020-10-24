@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 
 // An Activity is a view (Screen) with a user Interface
 class MainActivity : AppCompatActivity() {
+//    private var glideImage: GlideImage()
 
     //The initialization function, what happens after we load
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,4 +29,9 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
+    // A Private method to check the internet connection that will return false if not connected
+//    private fun checkNetworkConnectivity(): Boolean {
+//        return false
+//    }
 }

@@ -1,12 +1,15 @@
 package com.example.randomwebimageapp
 
+import android.app.Activity
+import android.widget.ImageView
+
 /* 
  * Created by Ravi Rachamalla on October 23, 2020
 */
 
-class GlideImage {
+class GlideImage() {
 
-    //properties of the glideimage class
+    //properties of the glide image class
     private val listOfImageUrls = mutableListOf<String>(
         "https://placebear.com/800/600",
         "https://placekitten.com/800/600",
@@ -24,4 +27,19 @@ class GlideImage {
 
     var lastURL = ""
         private set
+
+    // Initialization method will run every time this object is instantiated
+    init {
+        // Shuffle (randomize) the self.listOfImageUrls
+        this.listOfImageUrls.shuffle()
+    }
+
+    // GlideImage Class Methods:
+    fun loadGlideImage(imageView: ImageView, activity: Activity, imageName: String ){
+
+    }
+
+    fun getRandomImageUrl(): String {
+        return ""
+    }
 }

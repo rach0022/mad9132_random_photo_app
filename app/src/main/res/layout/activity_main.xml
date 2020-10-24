@@ -16,4 +16,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:layout_width="300"
+        android:layout_height="300"
+        android:id="imageView1" />
+
+    <Button
+        android:id="getImageButton"
+        android:layout_width="100"
+
+        android:layout_height="50"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="639dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
