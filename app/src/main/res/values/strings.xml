@@ -3,4 +3,6 @@
     <string name="message_title">Network Error</string>
     <string name="message_text">No Internet Connection</string>
     <string name="quit">Quit</string>
+    <string name="get_image_button_text">Get Image</string>
+    <string name="get_image_description">A random web image</string>
 </resources>

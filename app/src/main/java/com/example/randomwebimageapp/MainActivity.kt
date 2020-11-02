@@ -3,15 +3,21 @@ package com.example.randomwebimageapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import com.example.randomwebimageapp.databinding.ActivityMainBinding
 
 // An Activity is a view (Screen) with a user Interface
 class MainActivity : AppCompatActivity() {
-//    private var glideImage: GlideImage()
+    private val glideImage = GlideImage()
 
     //The initialization function, what happens after we load
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) //call the super class
-        setContentView(R.layout.activity_main) // sets up the user interface
+//        setContentView(R.layout.activity_main) // sets up the user interface
+
+        // using the view binding
+        // making our UI available
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //we need to pass it a context, the context being this
         val internetConnected: InternetConnected = InternetConnected(this)
@@ -26,7 +32,13 @@ class MainActivity : AppCompatActivity() {
                 .show()
         } else {
             //now we can write code where we know the internet is connected
+            // set the click listener to the get image button
+            binding.getImageButton.setOnClickListener(){
+                glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar)
+            }
 
+            // now lets run the get image button for the initial run
+            binding.getImageButton.callOnClick()
         }
     }
 

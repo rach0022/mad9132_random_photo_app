@@ -1,13 +1,17 @@
 package com.example.randomwebimageapp
 
 import android.app.Activity
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 /* 
  * Created by Ravi Rachamalla on October 23, 2020
 */
 
-class GlideImage() {
+class GlideImage {
 
     //properties of the glide image class
     private val listOfImageUrls = mutableListOf<String>(
@@ -20,7 +24,7 @@ class GlideImage() {
         "https://source.unsplash.com/collection/8930154/800x600",
         "https://picsum.photos/800/600",
         "https://www.placecage.com/800/600",
-        "http://fillmurray.com/800/600"
+        "https://fillmurray.com/800/600"
     )
 
     private var listCounter = 0
@@ -30,16 +34,48 @@ class GlideImage() {
 
     // Initialization method will run every time this object is instantiated
     init {
-        // Shuffle (randomize) the self.listOfImageUrls
+        // Shuffle (randomize) the this.listOfImageUrls
         this.listOfImageUrls.shuffle()
     }
 
     // GlideImage Class Methods:
-    fun loadGlideImage(imageView: ImageView, activity: Activity, imageName: String ){
+    // Will use the getRandomImageURL function as the default value for url
+    fun loadGlideImage(
+        imageView: ImageView,
+        context: Activity,
+        progressBar: ProgressBar,
+        url: String = this.getRandomImageURL()
+    ){
+        // first show the progress bar
+        progressBar.visibility = View.VISIBLE
+        // set up the context for the Glide bump tech library
+        // so we can access the image view controls
+        // we can chain on dot operators in a promise like flow to load our image
+        Glide.with(context) // our context = the Activity
+            .load(url)
+            .diskCacheStrategy(DiskCacheStrategy.ALL) // load the images into a cache for easier recall
+            .into(imageView) // load the image into the image view
 
+        this.lastURL = url // in case we use a different url, we should save the last used url
+
+        // lastly hide the progress bar once the image is loaded
+        progressBar.visibility = View.INVISIBLE
     }
 
-    fun getRandomImageUrl(): String {
-        return ""
+    private fun getRandomImageURL(): String {
+        // first set last url to the currently available url
+        this.lastURL = this.listOfImageUrls[this.listCounter]
+
+        // increment list counter
+        this.listCounter ++
+
+        // lets do a conditional check on list counter
+        if(this.listCounter == this.listOfImageUrls.size){
+            // shuffle the list first
+            this.listOfImageUrls.shuffle()
+            // reset the list counter
+            this.listCounter = 0
+        }
+        return this.lastURL
     }
 }
