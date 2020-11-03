@@ -24,7 +24,11 @@ class GlideImage {
         "https://source.unsplash.com/collection/8930154/800x600",
         "https://picsum.photos/800/600",
         "https://www.placecage.com/800/600",
-        "https://fillmurray.com/800/600"
+        "https://fillmurray.com/800/600",
+        "https://media.wired.com/photos/593250d94dc9b45ccec5d2fb/master/w_2560%2Cc_limit/270915898_3b84f9d176_o.jpg",
+        "https://asc-csa.gc.ca/images/recherche/tiles/ab472982-ce3b-4b22-9a96-70057e484b7e.jpg",
+        "https://asc-csa.gc.ca/images/recherche/tiles/218639e3-24f3-4289-a701-f5b55adae1e1.jpg",
+        "https://asc-csa.gc.ca/images/recherche/tiles/d4baade1-3ef5-4569-aa6f-05c419424c3c.jpg"
     )
 
     private var listCounter = 0
