@@ -7,6 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.randomwebimageapp.databinding.ActivityMainBinding
 
+/*
+ * Created by Ravi Rachamalla on November 06, 2020
+*/
+
 // An Activity is a view (Screen) with a user Interface
 class MainActivity : AppCompatActivity() {
     private val glideImage = GlideImage()

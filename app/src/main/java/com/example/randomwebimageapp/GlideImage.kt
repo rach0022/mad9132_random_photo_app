@@ -2,15 +2,20 @@ package com.example.randomwebimageapp
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 
 /* 
- * Created by Ravi Rachamalla on October 23, 2020
+ * Created by Ravi Rachamalla on November 6th, 2020
 */
 
 class GlideImage {
@@ -42,7 +47,6 @@ class GlideImage {
     init {
         // Shuffle (randomize) the this.listOfImageUrls
         this.listOfImageUrls.shuffle()
-        TheApp.context.toast("The App was Initialized")
     }
 
     // GlideImage Class Methods:
@@ -61,6 +65,21 @@ class GlideImage {
         // we can chain on dot operators in a promise like flow to load our image
         Glide.with(context) // our context = the Activity
             .load(url)
+                .listener(object: RequestListener<Drawable>{
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        progressBar.visibility = View.GONE
+                        context.toast("glide image load failed: $url")
+                        return false
+                    }
+
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        progressBar.visibility = View.GONE
+                        context.toast("Glide Load Success")
+                        imageView.setImageDrawable(resource)
+                        return false
+                    }
+
+                })
             .diskCacheStrategy(DiskCacheStrategy.ALL) // load the images into a cache for easier recall
             .into(imageView) // load the image into the image view
 

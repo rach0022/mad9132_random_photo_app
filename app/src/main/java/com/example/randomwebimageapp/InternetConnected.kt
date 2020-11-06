@@ -8,6 +8,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
+/*
+ * Created by Ravi Rachamalla on November 06, 2020
+*/
 
 class InternetConnected(val context: Context) {
     // A methods to check the phones network connectivity status
