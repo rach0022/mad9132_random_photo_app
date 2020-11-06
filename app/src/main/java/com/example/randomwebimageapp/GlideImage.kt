@@ -1,9 +1,11 @@
 package com.example.randomwebimageapp
 
 import android.app.Activity
+import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
@@ -40,6 +42,7 @@ class GlideImage {
     init {
         // Shuffle (randomize) the this.listOfImageUrls
         this.listOfImageUrls.shuffle()
+        TheApp.context.toast("The App was Initialized")
     }
 
     // GlideImage Class Methods:
@@ -52,6 +55,7 @@ class GlideImage {
     ){
         // first show the progress bar
         progressBar.visibility = View.VISIBLE
+
         // set up the context for the Glide bump tech library
         // so we can access the image view controls
         // we can chain on dot operators in a promise like flow to load our image
@@ -63,7 +67,7 @@ class GlideImage {
         this.lastURL = url // in case we use a different url, we should save the last used url
 
         // lastly hide the progress bar once the image is loaded
-        progressBar.visibility = View.INVISIBLE
+        progressBar.visibility = View.GONE
     }
 
     private fun getRandomImageURL(): String {
@@ -81,5 +85,10 @@ class GlideImage {
             this.listCounter = 0
         }
         return this.lastURL
+    }
+
+    // extension method
+    fun Context.toast(message: String){
+        Toast.makeText(TheApp.context, message, Toast.LENGTH_SHORT).show()
     }
 }
