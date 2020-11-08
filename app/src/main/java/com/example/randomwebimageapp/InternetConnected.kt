@@ -12,7 +12,9 @@ import android.net.NetworkCapabilities
  * Created by Ravi Rachamalla on November 06, 2020
 */
 
+// region InternetConnected Class
 class InternetConnected(val context: Context) {
+    // region InternetConnected Methods
     // A methods to check the phones network connectivity status
     fun checkNetworkConnectivity() : Boolean {
         //for Marshmallow API 23 and + use this style of check
@@ -33,4 +35,6 @@ class InternetConnected(val context: Context) {
         return connection != null && (connection.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
             connection.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
     }
+    // endregion
 }
+// endregion

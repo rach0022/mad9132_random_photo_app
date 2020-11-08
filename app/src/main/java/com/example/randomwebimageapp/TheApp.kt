@@ -12,7 +12,7 @@ class TheApp : Application(){
         context = applicationContext
     }
 
-    // a companion object will be available to this object
+    // an unnamed companion object will be available to this object
     companion object {
         // late init means this variable will be initialized later, if this is used before
         // init the application will crash, lateinit only works on vars

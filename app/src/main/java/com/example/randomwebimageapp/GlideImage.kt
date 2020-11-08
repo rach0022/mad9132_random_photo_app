@@ -18,9 +18,12 @@ import com.bumptech.glide.request.target.Target
  * Created by Ravi Rachamalla on November 6th, 2020
 */
 
+// region GlideImage Class
 class GlideImage {
 
-    //properties of the glide image class
+    // region GlideImage Properties
+    // listOfImageUrls, will be initialized with a string list containing https secured links to
+    // either place holder image sites or single images
     private val listOfImageUrls = mutableListOf<String>(
         "https://placebear.com/800/600",
         "https://placekitten.com/800/600",
@@ -31,25 +34,29 @@ class GlideImage {
         "https://source.unsplash.com/collection/8930154/800x600",
         "https://picsum.photos/800/600",
         "https://www.placecage.com/800/600",
-        "https://fillmurray.com/800/600",
         "https://media.wired.com/photos/593250d94dc9b45ccec5d2fb/master/w_2560%2Cc_limit/270915898_3b84f9d176_o.jpg",
         "https://asc-csa.gc.ca/images/recherche/tiles/ab472982-ce3b-4b22-9a96-70057e484b7e.jpg",
         "https://asc-csa.gc.ca/images/recherche/tiles/218639e3-24f3-4289-a701-f5b55adae1e1.jpg",
         "https://asc-csa.gc.ca/images/recherche/tiles/d4baade1-3ef5-4569-aa6f-05c419424c3c.jpg"
     )
 
+    // list counter, keeps track of index location of the list, when it reaches the list size
+    // it will be reset to zero
     private var listCounter = 0
 
+    // lastURL will contain the last url used to generate the user
     var lastURL = ""
         private set
 
+    // endregion
+
+    // region GlideImage Methods
     // Initialization method will run every time this object is instantiated
     init {
         // Shuffle (randomize) the this.listOfImageUrls
         this.listOfImageUrls.shuffle()
     }
 
-    // GlideImage Class Methods:
     // Will use the getRandomImageURL function as the default value for url
     fun loadGlideImage(
         imageView: ImageView,
@@ -106,8 +113,12 @@ class GlideImage {
         return this.lastURL
     }
 
-    // extension method
+    // extension method that contains a single string parameter called message
+    // which will contain the text for the Toast.makeText method with a short notification time
     fun Context.toast(message: String){
         Toast.makeText(TheApp.context, message, Toast.LENGTH_SHORT).show()
     }
+
+    // endregion
 }
+// endregion

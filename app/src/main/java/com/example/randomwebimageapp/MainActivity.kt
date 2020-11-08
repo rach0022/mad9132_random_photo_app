@@ -11,10 +11,14 @@ import com.example.randomwebimageapp.databinding.ActivityMainBinding
  * Created by Ravi Rachamalla on November 06, 2020
 */
 
+// region MainActivity Class
 // An Activity is a view (Screen) with a user Interface
 class MainActivity : AppCompatActivity() {
+    // region MainActivity Properties
     private val glideImage = GlideImage()
+    // endregion
 
+    // region MainActivity Methods
     //The initialization function, what happens after we load
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) //call the super class
@@ -52,4 +56,7 @@ class MainActivity : AppCompatActivity() {
 //    private fun checkNetworkConnectivity(): Boolean {
 //        return false
 //    }
+    // endregion
 }
+
+// endregion
