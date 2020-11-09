@@ -91,9 +91,6 @@ class GlideImage {
             .into(imageView) // load the image into the image view
 
         this.lastURL = url // in case we use a different url, we should save the last used url
-
-        // lastly hide the progress bar once the image is loaded
-        progressBar.visibility = View.GONE
     }
 
     private fun getRandomImageURL(): String {
