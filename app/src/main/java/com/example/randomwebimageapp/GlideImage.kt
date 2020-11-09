@@ -3,6 +3,7 @@ package com.example.randomwebimageapp
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.AsyncTask
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -48,6 +49,9 @@ class GlideImage {
     var lastURL = ""
         private set
 
+    // diskCacheStrategy
+    private val diskCacheStrategy = DiskCacheStrategy.ALL
+
     // endregion
 
     // region GlideImage Methods
@@ -87,7 +91,7 @@ class GlideImage {
                     }
 
                 })
-            .diskCacheStrategy(DiskCacheStrategy.ALL) // load the images into a cache for easier recall
+            .diskCacheStrategy(this.diskCacheStrategy) // load the images into a cache for easier recall
             .into(imageView) // load the image into the image view
 
         this.lastURL = url // in case we use a different url, we should save the last used url
@@ -110,10 +114,31 @@ class GlideImage {
         return this.lastURL
     }
 
+    //method to empty the cache using our nested class AsyncGlide
+    fun emptyCache(context: Context){
+        val asyncGlide = AsyncGlide(context)
+        asyncGlide.execute()
+    }
+
     // extension method that contains a single string parameter called message
     // which will contain the text for the Toast.makeText method with a short notification time
     fun Context.toast(message: String){
         Toast.makeText(TheApp.context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // private nested class AsyncGlide, will be used to reset the the disk cache upon app load, among other things
+    private inner class AsyncGlide(val context: Context) : AsyncTask<Any, Any, Any>(){
+        override fun doInBackground(vararg params: Any?): Any? {
+            Glide.get(context).clearDiskCache()
+            return null
+        }
+
+        // we override the onPostExecute function to display a toast message to the user
+        // that the image class was deleted
+        override fun onPostExecute(result: Any?) {
+            super.onPostExecute(result)
+            context.toast("Image cache deleted")
+        }
     }
 
     // endregion
