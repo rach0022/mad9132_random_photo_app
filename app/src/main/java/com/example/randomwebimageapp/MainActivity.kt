@@ -23,7 +23,14 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
 
     // a property to detect gestures for the gesture listeners, we set it to null because some devices
     // may not have gestures
-    var gestureDetector: GestureDetectorCompat? = null
+    private var gestureDetector: GestureDetectorCompat? = null
+
+    // the binding property, we set it to the main activity in the oncreate method
+    private lateinit var binding: ActivityMainBinding
+
+    // a variable to check if our device is in full screen or not
+    private var showingSystemUI = true
+
     // endregion
 
     // region MainActivity Methods
@@ -34,7 +41,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
 
         // using the view binding
         // making our UI available
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        this.binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //we need to pass it a context, the context being this
@@ -59,14 +66,9 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
             gestureDetector?.setOnDoubleTapListener(this)
 
 
-            //now we can write code where we know the internet is connected
-            // set the click listener to the get image button
-            binding.getImageButton.setOnClickListener(){
-                glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar)
-            }
+            // load an image on startup
+            glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar)
 
-            // now lets run the get image button for the initial run
-            binding.getImageButton.callOnClick()
         }
     }
 
@@ -83,51 +85,55 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
         Toast.makeText(TheApp.context, message, Toast.LENGTH_SHORT).show()
     }
 
-    //region Gesture Methods
+    //region Gesture Event Methods
 
     override fun onDown(p0: MotionEvent?): Boolean {
-        toast("onDown")
         return true
     }
 
     override fun onShowPress(p0: MotionEvent?) {
-        TODO("Not yet implemented")
     }
 
     override fun onSingleTapUp(p0: MotionEvent?): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
+
     override fun onScroll(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun onLongPress(p0: MotionEvent?) {
-        TODO("Not yet implemented")
+        glideImage.emptyCache(this)
+        this.toast("Cleared cache")
     }
 
-    override fun onFling(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
-        TODO("Not yet implemented")
+    override fun onFling(p0: MotionEvent, p1: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+        // We want the user to swipe from left to right and display the next image
+        // if the x value of is positive, or if the x value 2 is less then the x value of the starting point
+        // we can also determine velocity but we
+        // p0!!. the !!. is a cheat to bypass if the value is null
+        if (p0.x < p1.x){
+//        if((p1.x - p0.x) < 0)
+            glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar)
+        }
+        return true
     }
 
     override fun onSingleTapConfirmed(p0: MotionEvent?): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun onDoubleTap(p0: MotionEvent?): Boolean {
-        TODO("Not yet implemented")
+        this.showingSystemUI = !this.showingSystemUI
+        return true
     }
 
     override fun onDoubleTapEvent(p0: MotionEvent?): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     // endregion
-
-    // A Private method to check the internet connection that will return false if not connected
-//    private fun checkNetworkConnectivity(): Boolean {
-//        return false
-//    }
     // endregion
 }
 

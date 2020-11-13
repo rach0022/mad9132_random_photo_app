@@ -78,14 +78,16 @@ class GlideImage {
             .load(url)
                 .listener(object: RequestListener<Drawable>{
                     override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        // hide hte progress bar and display the url that failed in a toast message
                         progressBar.visibility = View.GONE
                         context.toast("glide image load failed: $url")
                         return false
                     }
 
                     override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        // hide the progress bar and set the imageView to the resource returned
                         progressBar.visibility = View.GONE
-                        context.toast("Glide Load Success")
+//                        context.toast("Glide Load Success")
                         imageView.setImageDrawable(resource)
                         return false
                     }
@@ -137,7 +139,7 @@ class GlideImage {
         // that the image class was deleted
         override fun onPostExecute(result: Any?) {
             super.onPostExecute(result)
-            context.toast("Image cache deleted")
+//            context.toast("Image cache deleted")
         }
     }
 
