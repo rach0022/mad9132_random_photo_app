@@ -66,5 +66,25 @@ class SharedPreferences(private val context: Context = TheApp.context) {
 
     // **** you need to add get methods for Int?, Long?, Float?, Boolean? and Set<String>?
 
+//    fun setValueString(KEY_NAME: String){
+//        sharedPref.
+//    }
+
+    fun getValueInt(KEY_NAME: String): Int? {
+        return sharedPref.getInt(KEY_NAME, 0)
+    }
+
+    fun getValueFloat(KEY_NAME: String): Float? {
+        return sharedPref.getFloat(KEY_NAME, 0.0f)
+    }
+
+    fun getValueLong(KEY_NAME: String): Long? {
+        return sharedPref.getLong(KEY_NAME, 0)
+    }
+
+    fun getValueBoolean(KEY_NAME: String): Boolean? {
+        return sharedPref.getBoolean(KEY_NAME, false)
+    }
+
     // endregion
 }
