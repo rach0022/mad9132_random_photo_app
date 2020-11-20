@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import java.io.File
 
 /* 
  * Created by Ravi Rachamalla on November 6th, 2020
@@ -44,11 +45,18 @@ class GlideImage {
             "https://source.unsplash.com/collection/181581/${appScreenWidth}x${appScreenHeight}$randomSiteIdentifier",
             "https://source.unsplash.com/collection/8930154/${appScreenWidth}x${appScreenHeight}$randomSiteIdentifier",
             "https://picsum.photos/${appScreenWidth}/${appScreenHeight}$randomSiteIdentifier",
-            "https://www.placecage.com/${appScreenWidth}/${appScreenHeight}$randomSiteIdentifier",
+            "https://thumbs.gfycat.com/ClumsySlipperyBirdofparadise-size_restricted.gif",
             "https://media.wired.com/photos/593250d94dc9b45ccec5d2fb/master/w_2560%2Cc_limit/270915898_3b84f9d176_o.jpg",
-            "https://asc-csa.gc.ca/images/recherche/tiles/ab472982-ce3b-4b22-9a96-70057e484b7e.jpg",
-            "https://asc-csa.gc.ca/images/recherche/tiles/218639e3-24f3-4289-a701-f5b55adae1e1.jpg",
-            "https://asc-csa.gc.ca/images/recherche/tiles/d4baade1-3ef5-4569-aa6f-05c419424c3c.jpg"
+            "https://beta.ctvnews.ca/content/dam/ctvnews/images/2020/1/3/1_4752869.jpg",
+            "https://scx2.b-cdn.net/gfx/news/2018/beaver.jpg",
+            "https://asc-csa.gc.ca/images/recherche/tiles/d4baade1-3ef5-4569-aa6f-05c419424c3c.jpg",
+            "https://cdn.mos.cms.futurecdn.net/bQgcMwEnyhFu6ASuUFrtsn-1200-80.jpg",
+            "https://static01.nyt.com/images/2020/01/21/science/17TB-ALLIGATORCARCASS02/17TB-ALLIGATORCARCASS02-videoSixteenByNineJumbo1600.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/4/4f/Rhino_%28234581759%29.jpeg",
+            "https://static.scientificamerican.com/sciam/cache/file/766BFBD4-F8A1-4B7D-8416A370010B5A88_source.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/0/0f/MC_Siedleragame.jpg",
+            "https://www.awf.org/sites/default/files/Website_SpeciesPage_Pangolin01_Hero.jpg",
+            "https://www.sustainability-times.com/wp-content/uploads/thumbs/animals_hero-platypus-3afb84ol2az8oimvb3aw3k.jpg"
     )
 
     // list counter, keeps track of index location of the list, when it reaches the list size
@@ -167,6 +175,14 @@ class GlideImage {
     fun emptyCache(context: Context) {
         val asyncGlide = AsyncGlide(context)
         asyncGlide.execute()
+    }
+
+    fun loadImageFromInternalStorage(
+            imageView: ImageView,
+            context: Context
+    ){
+        // get the filePath for the fileDirectory from the context
+        val filePath = "${context.filesDir}${File.separator}${context.getString(R.string.last_image_file_name)}"
     }
 
     // extension method that contains a single string parameter called message

@@ -1,6 +1,9 @@
 package com.example.randomwebimageapp
 
+import AsyncStorageIO
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.gesture.Gesture
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +12,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GestureDetectorCompat
 import com.example.randomwebimageapp.databinding.ActivityMainBinding
 
@@ -32,9 +38,13 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
     // a variable to check if our device is in full screen or not
     private var showingSystemUI = true
 
+    // for runtime permissions, can be any positive int value
+    private val requestCode = 13
+
     // endregion
 
     // region MainActivity Methods
+    // region LifeCycle Events
     //The initialization function, what happens after we load
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) //call the super class
@@ -57,6 +67,8 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
                 .setNegativeButton(R.string.quit){_, _ -> finishAffinity()}
                 .show()
         } else {
+            //setup the permissions if we have an internet connection
+            setupPermissions()
 
             // clear out the cache
             glideImage.emptyCache(this)
@@ -72,6 +84,19 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
 
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+
+        // save the application state to recover it after the app is paused
+        // first get the image data (make sure we are displaying a non failed url image)
+        if(binding.imageView1.drawable != null){
+            val bitmap = binding.imageView1.drawable.toBitmap()
+            val asyncStorageIO = AsyncStorageIO(bitmap, savingLastImage = true)
+            asyncStorageIO.execute()
+        }
+    }
+    // endregion
 
     // override the onTouchEvent function to pass the touch to the gestureDector
     // to determine what type of gesture the touch was involved in
@@ -159,14 +184,56 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
 
     }
-
     // Shows the system bars by removing all the flags
     // except for the ones that make the content appear under the system bars.
     private fun showSystemUI(){
         window.decorView.systemUiVisibility = ( View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     }
+
     // endregion
+
+    // region Permissions
+    private fun setupPermissions(){
+        val permission = ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            this.toast("Permission denied!")
+            makeRequest()
+        } else {
+            this.toast("Permission Already Granted...")
+        }
+    }
+
+    private fun makeRequest(){
+        ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                requestCode
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when(requestCode){
+            this.requestCode -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    this.toast("Permission denied by user!")
+                } else {
+                    this.toast("Permission granted by user!")
+                }
+            }
+        }
+    }
+//endregion
+
     // endregion
 }
 
