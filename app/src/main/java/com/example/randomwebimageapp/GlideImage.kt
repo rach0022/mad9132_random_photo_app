@@ -181,8 +181,12 @@ class GlideImage {
             imageView: ImageView,
             context: Context
     ){
-        // get the filePath for the fileDirectory from the context
-        val filePath = "${context.filesDir}${File.separator}${context.getString(R.string.last_image_file_name)}"
+        val filePath = "${context.filesDir}${File.separator}${TheApp.context.getString(R.string.last_image_file_name)}"
+        // context.toast(filePath) // for testing
+        Glide.with(context)
+                .load(File(filePath))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageView)
     }
 
     // extension method that contains a single string parameter called message
@@ -205,6 +209,8 @@ class GlideImage {
 //            context.toast("Image cache deleted")
         }
     }
+
+
 
     // endregion
 }

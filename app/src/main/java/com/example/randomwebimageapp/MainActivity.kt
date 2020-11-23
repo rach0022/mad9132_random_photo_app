@@ -80,7 +80,22 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
 
 
             // load an image on startup
-            glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar)
+            val fileName = this.getString(R.string.last_image_file_name)
+            val file = this.getFileStreamPath(fileName)
+            if (file.exists()) {
+                //file.delete() // use this for testing only
+                glideImage.loadImageFromInternalStorage(binding.imageView1, this)
+            } else {
+
+                //sharedPreference.removeValue(R.string.last_url_key.toString())
+                val lastUrl = sharedPreference.getValueString(getString(R.string.last_url_key))
+
+                if (lastUrl != null) {
+                    glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar, lastUrl)
+                } else {
+                    glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar)
+                }
+            }
 
         }
     }
