@@ -79,7 +79,8 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
             gestureDetector = GestureDetectorCompat(this, this)
             gestureDetector?.setOnDoubleTapListener(this)
 
-
+            // get a reference to the shared preferences
+            val sharedPreference = SharedPreferences()
             // load an image on startup
             val fileName = this.getString(R.string.last_image_file_name)
             val file = this.getFileStreamPath(fileName)
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
             } else {
 
                 //sharedPreference.removeValue(R.string.last_url_key.toString())
-                val lastUrl = sharedPreferences.getValueString(getString(R.string.last_url_key))
+                val lastUrl = sharedPreference.getValueString(getString(R.string.last_url_key))
 
                 if (lastUrl != null) {
                     glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar, lastUrl)

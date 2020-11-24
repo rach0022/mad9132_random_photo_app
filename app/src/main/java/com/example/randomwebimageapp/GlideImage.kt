@@ -73,6 +73,9 @@ class GlideImage {
     // diskCacheStrategy
     private var diskCacheStrategy = DiskCacheStrategy.ALL
 
+    // the reference to th sharedPreferences:
+    private val sharedPreference = SharedPreferences()
+
     // endregion
 
     // region GlideImage Methods
