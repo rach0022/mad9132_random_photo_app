@@ -132,24 +132,34 @@ class GlideImage {
         Glide.with(context) // our context = the Activity
                 .load(updatedURL)
                 .diskCacheStrategy(this.diskCacheStrategy) // load the images into a cache for easier recall
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        // hide hte progress bar and display the url that failed in a toast message
+                .listener(object: RequestListener<Drawable>{
+                    override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                    ): Boolean {
                         progressBar.visibility = View.GONE
-                        context.toast("glide image load failed: $updatedURL")
+                        context.toast("Glide Load Failed: $updatedURL")
                         return false
                     }
 
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        // hide the progress bar and set the imageView to the resource returned
+                    override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                    ): Boolean {
                         progressBar.visibility = View.GONE
-//                        context.toast("Glide Load Success")
                         imageView.setImageDrawable(resource)
-                        // only save the last url if it is successful
-                        lastURL = updatedURL // in case we use a different url, we should save the last used url
+
+                        lastURL = updatedURL
+
+                        sharedPreference.save(TheApp.context.getString(R.string.last_url_key), lastURL)
+
                         return false
                     }
-
                 })
                 .into(imageView) // load the image into the image view
     }

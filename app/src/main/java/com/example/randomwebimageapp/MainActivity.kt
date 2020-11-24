@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GestureDetectorCompat
 import com.example.randomwebimageapp.databinding.ActivityMainBinding
+import java.lang.Math.abs
 
 /*
  * Created by Ravi Rachamalla on November 06, 2020
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
             } else {
 
                 //sharedPreference.removeValue(R.string.last_url_key.toString())
-                val lastUrl = sharedPreference.getValueString(getString(R.string.last_url_key))
+                val lastUrl = sharedPreferences.getValueString(getString(R.string.last_url_key))
 
                 if (lastUrl != null) {
                     glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar, lastUrl)
@@ -149,16 +150,43 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
         this.toast("Cleared cache")
     }
 
-    override fun onFling(p0: MotionEvent, p1: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
-        // We want the user to swipe from left to right and display the next image
-        // if the x value of is positive, or if the x value 2 is less then the x value of the starting point
-        // we can also determine velocity but we
-        // p0!!. the !!. is a cheat to bypass if the value is null
-        if (p0.x < p1.x){
-//        if((p1.x - p0.x) < 0)
-            glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar)
+    // Copy this entire method and replace your existing onFling method in MainActivity.kt
+
+
+    override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+
+/*
+Swipe threshold indicates the difference between the initial and final position
+of a touch event in any of the four possible directions.
+Velocity threshold indicates how quickly it was swiped.
+*/
+
+        val swipeDistanceThreshold = 150 // distance travelled
+        val swipeVelocityThreshold = 200 // speed
+        val yDifference: Float = e2.y - e1.y
+        val xDifference: Float = e2.x - e1.x
+        if (abs(xDifference) > abs(yDifference)) {
+            if (abs(xDifference) > swipeDistanceThreshold && abs(velocityX) > swipeVelocityThreshold) {
+                if (xDifference > 0) {
+                    // this.toast("Swipe Right")
+                    glideImage.loadGlideImage(binding.imageView1, this, binding.progressBar)
+                } // else {
+                // this.toast("Swipe Left")
+                // }
+            }
+        } else if (abs(yDifference) > swipeDistanceThreshold && abs(velocityY) > swipeVelocityThreshold) {
+            if (yDifference > 0) {
+                // this.toast("Swipe Bottom")
+                val bitmap = binding.imageView1.drawable.toBitmap()
+                val asyncStorageIO = AsyncStorageIO(bitmap)
+                asyncStorageIO.execute()
+            } // else {
+            // this.toast("Swipe Top")
+// }
         }
         return true
+
+
     }
 
     override fun onSingleTapConfirmed(p0: MotionEvent?): Boolean {
