@@ -23,7 +23,7 @@ import java.io.File
 
 // region GlideImage Class
 class GlideImage {
-
+    // region GlideImage Properties
     //private val for the randomSiteIdentifier
     private val randomSiteIdentifier = "<RANDOM>" //NOTE < and > are illegal url characters+
     private val appScreenWidth = "<appscreenwidth>"
@@ -33,7 +33,7 @@ class GlideImage {
     private var height = 400
 
 
-    // region GlideImage Properties
+
     // listOfImageUrls, will be initialized with a string list containing https secured links to
     // either place holder image sites or single images
     private val listOfImageUrls = mutableListOf<String>(
@@ -56,7 +56,9 @@ class GlideImage {
             "https://static.scientificamerican.com/sciam/cache/file/766BFBD4-F8A1-4B7D-8416A370010B5A88_source.jpg",
             "https://upload.wikimedia.org/wikipedia/commons/0/0f/MC_Siedleragame.jpg",
             "https://www.awf.org/sites/default/files/Website_SpeciesPage_Pangolin01_Hero.jpg",
-            "https://www.sustainability-times.com/wp-content/uploads/thumbs/animals_hero-platypus-3afb84ol2az8oimvb3aw3k.jpg"
+            "https://www.sustainability-times.com/wp-content/uploads/thumbs/animals_hero-platypus-3afb84ol2az8oimvb3aw3k.jpg",
+            "https://source.unsplash.com/random/${appScreenWidth}x${appScreenHeight}$randomSiteIdentifier",
+            "https://picsum.photos/${appScreenWidth}x${appScreenHeight}$randomSiteIdentifier"
     )
 
     // list counter, keeps track of index location of the list, when it reaches the list size
@@ -103,9 +105,6 @@ class GlideImage {
 
         // check if we are in portrait mode
         if(portrait){ //swap width and height
-//            var temp = height
-//            height = width
-//            width = temp
             width = height.also{height = width}
         }
 
@@ -195,7 +194,6 @@ class GlideImage {
             context: Context
     ){
         val filePath = "${context.filesDir}${File.separator}${TheApp.context.getString(R.string.last_image_file_name)}"
-        // context.toast(filePath) // for testing
         Glide.with(context)
                 .load(File(filePath))
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -219,7 +217,6 @@ class GlideImage {
         // that the image class was deleted
         override fun onPostExecute(result: Any?) {
             super.onPostExecute(result)
-//            context.toast("Image cache deleted")
         }
     }
 

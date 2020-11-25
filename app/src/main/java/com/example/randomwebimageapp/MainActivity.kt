@@ -4,7 +4,6 @@ import AsyncStorageIO
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.gesture.Gesture
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.GestureDetector
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
 
     // a property to detect gestures for the gesture listeners, we set it to null because some devices
     // may not have gestures
-    private var gestureDetector: GestureDetectorCompat? = null
+    private lateinit var gestureDetector: GestureDetectorCompat
 
     // the binding property, we set it to the main activity in the oncreate method
     private lateinit var binding: ActivityMainBinding
@@ -49,7 +48,6 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
     //The initialization function, what happens after we load
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) //call the super class
-//        setContentView(R.layout.activity_main) // sets up the user interface
 
         // using the view binding
         // making our UI available
@@ -77,19 +75,19 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
             // set up the listeners for gesture inputs by the user
             // hook up the detector for double tap inputs
             gestureDetector = GestureDetectorCompat(this, this)
-            gestureDetector?.setOnDoubleTapListener(this)
+            gestureDetector.setOnDoubleTapListener(this)
 
             // get a reference to the shared preferences
             val sharedPreference = SharedPreferences()
+
             // load an image on startup
             val fileName = this.getString(R.string.last_image_file_name)
+            // get a the file connection and see if this file exists
             val file = this.getFileStreamPath(fileName)
             if (file.exists()) {
-                //file.delete() // use this for testing only
                 glideImage.loadImageFromInternalStorage(binding.imageView1, this)
             } else {
 
-                //sharedPreference.removeValue(R.string.last_url_key.toString())
                 val lastUrl = sharedPreference.getValueString(getString(R.string.last_url_key))
 
                 if (lastUrl != null) {
@@ -118,7 +116,7 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
     // override the onTouchEvent function to pass the touch to the gestureDector
     // to determine what type of gesture the touch was involved in
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        this.gestureDetector?.onTouchEvent(event)
+        this.gestureDetector.onTouchEvent(event)
         return super.onTouchEvent(event)
     }
 
@@ -156,11 +154,11 @@ class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, Ges
 
     override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
 
-/*
-Swipe threshold indicates the difference between the initial and final position
-of a touch event in any of the four possible directions.
-Velocity threshold indicates how quickly it was swiped.
-*/
+        /*
+        Swipe threshold indicates the difference between the initial and final position
+        of a touch event in any of the four possible directions.
+        Velocity threshold indicates how quickly it was swiped.
+        */
 
         val swipeDistanceThreshold = 150 // distance travelled
         val swipeVelocityThreshold = 200 // speed
@@ -238,6 +236,7 @@ Velocity threshold indicates how quickly it was swiped.
     // endregion
 
     // region Permissions
+    // method to setupPermission, if its granted we will toast the user saying denied or already granted
     private fun setupPermissions(){
         val permission = ContextCompat.checkSelfPermission(
                 this,
@@ -251,6 +250,7 @@ Velocity threshold indicates how quickly it was swiped.
         }
     }
 
+
     private fun makeRequest(){
         ActivityCompat.requestPermissions(
                 this,
@@ -259,6 +259,7 @@ Velocity threshold indicates how quickly it was swiped.
         )
     }
 
+    // callback function to determine what happens after we request the permissions
     override fun onRequestPermissionsResult(
             requestCode: Int,
             permissions: Array<out String>,
