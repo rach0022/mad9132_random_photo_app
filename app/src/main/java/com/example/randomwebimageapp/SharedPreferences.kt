@@ -66,9 +66,11 @@ class SharedPreferences(private val context: Context = TheApp.context) {
 
     // **** you need to add get methods for Int?, Long?, Float?, Boolean? and Set<String>?
 
-//    fun setValueString(KEY_NAME: String){
-//        sharedPref.
-//    }
+    fun setValueString(KEY_NAME: String, text: String){
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+        editor.putString(KEY_NAME, text)
+        editor.apply()
+    }
 
     fun getValueInt(KEY_NAME: String): Int? {
         return sharedPref.getInt(KEY_NAME, 0)
